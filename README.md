@@ -7,13 +7,19 @@ Sistema responsável por efetuar a lógica de saque de um caixa eletrônico, ret
 
 ## Rodando a Aplicação
 Para rodar a aplicação deve ser aberto um terminal e rodado o seguinte comando:
-```docker-compose run --rm caixa-eletronico php /app/application.php VALOR_A_SER_SACADO```
+```bash
+$ docker-compose run --rm caixa-eletronico php /app/application.php VALOR_A_SER_SACADO
+```
 
 ### Exemplos
 Tenta sacar o valor de R$ 100,00.
-```docker-compose run --rm caixa-eletronico php /app/application.php 100```
+```bash
+$ docker-compose run --rm caixa-eletronico php /app/application.php 100
+```
 Tenta sacar o valor de R$ 100,20.
-```docker-compose run --rm caixa-eletronico php /app/application.php 100.20```
+```bash
+$ docker-compose run --rm caixa-eletronico php /app/application.php 100.20
+```
 
 
 
