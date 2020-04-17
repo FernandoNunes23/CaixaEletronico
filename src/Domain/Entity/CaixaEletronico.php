@@ -90,7 +90,7 @@ Class CaixaEletronico {
                 }
 
                 $valor       			 = $valor - ($nota["valor"] * $numeroNotas);
-                $notas[$i]["nota"]       = number_format($nota["valor"], 2, ",", ".");
+                $notas[$i]["nota"]       = (float) $nota["valor"];
                 $notas[$i]["quantidade"] = (int) $numeroNotas;
                 $i++;
             }

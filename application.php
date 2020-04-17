@@ -4,28 +4,13 @@ require __DIR__ . '/vendor/autoload.php';
 
 $config = require "config.php";
 
-if (empty($argv[1])) {
-    echo "É necessário passar o valor como parâmetro. \n";
-    exit();
-}
+$app = new Ahc\Cli\Application('Caixa Eletrônico', '0.0.1');
 
-$valor = (float) $argv[1];
+$colorText = new \Ahc\Cli\Output\Color();
+$caixaEletronico = new Application\Domain\Entity\CaixaEletronico($config["notas_disponiveis"]);
+$logger = new Monolog\Logger("application");
+$logger->pushHandler(new \Monolog\Handler\StreamHandler("logs/application.log"));
 
-$caixaEletronico = new \Application\Domain\Entity\CaixaEletronico($config["notas_disponiveis"]);
+$app->add(new Application\Console\Command\SacarCommand($caixaEletronico, $colorText, $logger));
 
-try {
-    $notas = $caixaEletronico->sacar($valor);
-
-    $valor = number_format($valor, 2 , ",", ".");
-
-    $print = "Valor do Saque: R$ {$valor} \nNotas: \n";
-
-    foreach ($notas as $nota) {
-        $print .=  "{$nota["quantidade"]} nota(s) de R$ {$nota["nota"]} \n";
-    }
-
-    echo $print . "\n";
-
-} catch (\Exception $e) {
-    echo $e->getMessage() . "\n";
-}
+$app->handle($_SERVER['argv']);

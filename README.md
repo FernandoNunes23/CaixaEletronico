@@ -1,4 +1,4 @@
-# CaixaEletronico
+# Caixa Eletrônico
 Sistema responsável por efetuar a lógica de saque de um caixa eletrônico, retornando dentro das notas disponíveis, a quantidade de notas necessárias para o saque.
 
 ## Pré-Requisitos
