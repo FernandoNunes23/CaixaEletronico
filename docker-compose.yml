@@ -1,0 +1,11 @@
+version: '2'
+services:
+  caixa-eletronico:
+    volumes:
+      - ./:/app/
+    image: php:7.4-alpine3.11
+    container_name: caixa-eletronico
+    ports:
+      - "80:80"
+    environment:
+      WEB_DOCUMENT_ROOT: /app
