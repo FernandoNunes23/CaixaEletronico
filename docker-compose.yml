@@ -3,9 +3,13 @@ services:
   caixa-eletronico:
     volumes:
       - ./:/app/
-    image: php:7.4-alpine3.11
     container_name: caixa-eletronico
-    ports:
-      - "80:80"
-    environment:
-      WEB_DOCUMENT_ROOT: /app
+    image: caixa-eletronico
+    build: ./
+
+  composer:
+    image: composer
+    command: install --ignore-platform-reqs --prefer-dist -o
+    volumes:
+      - ~/.ssh:/root/.ssh
+      - ./:/app

@@ -5,8 +5,14 @@ Sistema responsável por efetuar a lógica de saque de um caixa eletrônico, ret
 - Docker 19.03.1
 - Docker Compose 1.24.0
 
-## Rodando a Aplicação
-Para rodar a aplicação deve ser aberto um terminal e rodado o seguinte comando:
+## Instalação
+Para instalar as dependências necessárias para o funcionamento da aplicação deve ser executado o seguinte comando:
+```bash
+$ docker-compose run --rm composer
+```
+
+## Executando a Aplicação
+Para rodar a aplicação deve ser aberto um terminal e executado o seguinte comando:
 ```bash
 $ docker-compose run --rm caixa-eletronico php /app/application.php VALOR_A_SER_SACADO
 ```

@@ -39,7 +39,7 @@ Class CaixaEletronico {
      *
      * @param float $valor
      * @return array
-     * @throws Exception
+     * @throws \Exception
      */
     public function sacar(float $valor): array
     {
@@ -68,7 +68,7 @@ Class CaixaEletronico {
      *
      * @param $valor
      * @return array
-     * @throws Exception
+     * @throws \Exception
      */
     private function getNotas($valor): array
     {
