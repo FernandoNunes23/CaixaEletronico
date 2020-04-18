@@ -64,6 +64,10 @@ final class SacarCommand extends Command
 
         try {
 
+            if (!is_numeric($valor)) {
+                throw new \InvalidArgumentException("O parametro 'valor' deve ser numerico");
+            }
+
             if (is_null($valor)) {
                 throw new \InvalidArgumentException("O parametro 'valor' deve ser informado.");
             }
