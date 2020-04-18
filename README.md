@@ -14,17 +14,18 @@ $ docker-compose run --rm composer
 ## Executando a Aplicação
 Para rodar a aplicação deve ser aberto um terminal e executado o seguinte comando:
 ```bash
-$ docker-compose run --rm caixa-eletronico php /app/application.php VALOR_A_SER_SACADO
+$ docker-compose run --rm caixa-eletronico php /app/application.php ACAO [OPÇÕES] VALOR_A_SER_SACADO
 ```
 
 ### Exemplos
-Tenta sacar o valor de R$ 100,00.
+Solicita o saque de R$ 100,00 e retorna plain text.
 ```bash
-$ docker-compose run --rm caixa-eletronico php /app/application.php 100
+$ docker-compose run --rm caixa-eletronico php /app/application.php sacar 100
 ```
-Tenta sacar o valor de R$ 100,20.
+
+Solcita o saque de de R$ 100,00 e retorna json.
 ```bash
-$ docker-compose run --rm caixa-eletronico php /app/application.php 100.20
+$ docker-compose run --rm caixa-eletronico php /app/application.php sacar --json 100
 ```
 
 

@@ -56,27 +56,47 @@ class SacarCommand extends Command
      */
     public function execute($json, $valor)
     {
-        $this->logger->info("Executando o comando de saque.");
+        $this->logger->info("Executando o comando de saque.",[
+            "parametros" => $this->app()->argv()
+        ]);
 
         $io = $this->app()->io();
 
         try {
 
             if (is_null($valor)) {
-                echo $this->colorText->error("O parâmetro 'valor' deve ser informado.\n\n");
-                $this->app()->showHelp();
-                return;
+                throw new \InvalidArgumentException("O parametro 'valor' deve ser informado.");
             }
 
             $notas = $this->caixaEletronico->sacar((float) $valor);
 
             $io->write($this->formataRetorno($valor, $notas, $json), true);
 
+            $this->logger->info("Saque realizado com sucesso.", [
+                "notas" => $notas
+            ]);
+
         } catch (\Exception $e) {
-            echo $this->colorText->warn($e->getMessage()."\n");
+            $this->logger->error("Ocorreu um erro ao retornar as notas para saque.",[
+                "erro" => $e->getMessage()
+            ]);
+
+            echo $this->colorText->error($this->formataRetornoErro($e->getMessage(), $json) . "\n");
 
             return;
         }
+    }
+
+    private function formataRetornoErro(string $message, $json = false)
+    {
+        if ($json) {
+            return json_encode([
+                "status"  => "error",
+                "message" => $message
+            ]);
+        }
+
+        return $message;
     }
 
     /**
@@ -88,7 +108,10 @@ class SacarCommand extends Command
     private function formataRetorno(string $valor, array $notas, $json = false): string
     {
         if ($json) {
-            return json_encode($notas);
+            return json_encode([
+                "status" => "ok",
+                "notas"  => $notas
+            ]);
         }
 
         $valor = number_format($valor, 2, ",", ".");

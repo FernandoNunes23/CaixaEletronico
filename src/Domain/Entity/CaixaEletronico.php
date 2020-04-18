@@ -44,7 +44,7 @@ Class CaixaEletronico {
     public function sacar(float $valor): array
     {
         if ($valor < $this->getNotaComValorMaisBaixo()["valor"]) {
-            throw new \InvalidArgumentException("O valor mínimo de saque é {$this->getNotaComValorMaisBaixo()["valor"]}");
+            throw new \InvalidArgumentException("O valor minimo de saque e {$this->getNotaComValorMaisBaixo()["valor"]}");
         }
 
         return $this->getNotas($valor);
@@ -101,7 +101,7 @@ Class CaixaEletronico {
         }
 
         if ($valor > 0) {
-            throw new \Exception("Não é possível sacar o valor solicitado com as notas disponíveis.");
+            throw new \Exception("Nao e possivel sacar o valor solicitado com as notas disponiveis.");
         }
 
         return $notas;
