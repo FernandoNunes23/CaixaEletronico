@@ -7,7 +7,7 @@ namespace Application\Domain\Entity;
 /**
  * Class CaixaEletronico
  */
-Class CaixaEletronico {
+final class CaixaEletronico {
 
     /**
      * @var array
@@ -29,9 +29,47 @@ Class CaixaEletronico {
      */
     public function __construct(array $notasDisponiveis)
     {
+        $this->validaFormatoNotasDisponiveis($notasDisponiveis);
+
         krsort($notasDisponiveis);
 
         $this->notasDisponiveis = $notasDisponiveis;
+    }
+
+    /**
+     * @param array $notasDisponiveis
+     */
+    private function validaFormatoNotasDisponiveis(array $notasDisponiveis)
+    {
+        foreach ($notasDisponiveis as $key => $nota) {
+            if (!is_numeric($key)) {
+                throw new \InvalidArgumentException("As chaves do array passado devem ser numericas.");
+            }
+
+            if (empty($nota["valor"])) {
+                throw new \InvalidArgumentException("O array com informacao da nota, deve conter uma chave chamada 'valor'");
+            }
+
+            if (!is_numeric($nota["valor"])) {
+                throw new \InvalidArgumentException("A chave 'valor' com a informacao da nota, deve ser numerica.");
+            }
+
+            if ($key != $nota["valor"]) {
+                throw new \InvalidArgumentException("A chave 'valor' deve ter o mesmo valor da chave 'valor' dentro da informacao da nota.");
+            }
+
+            if ($nota["valor"] <= 0) {
+                throw new \InvalidArgumentException("A chave 'valor' deve ter o valor maior que zero.");
+            }
+
+            if (!empty($nota["quantidade"]) && !is_numeric($nota["quantidade"])) {
+                throw new \InvalidArgumentException("A chave 'quantidade' com a informacao da nota, deve ser numerica.");
+            }
+
+            if (!empty($nota["quantidade"]) && $nota["quantidade"] < 0) {
+                throw new \InvalidArgumentException("A chave 'quantidade' nao pode ser negativo.");
+            }
+        }
     }
 
     /**
@@ -56,7 +94,7 @@ Class CaixaEletronico {
      *
      * @return array|null
      */
-    private function getNotaComValorMaisBaixo(): array
+    public function getNotaComValorMaisBaixo(): array
     {
         return $this->notasDisponiveis[key(array_slice($this->notasDisponiveis, -1, 1, true))];
     }

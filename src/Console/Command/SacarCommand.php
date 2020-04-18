@@ -11,7 +11,7 @@ use Monolog\Logger;
  * Class SacarCommand
  * @package Application\Console\Command
  */
-class SacarCommand extends Command
+final class SacarCommand extends Command
 {
     /** @var CaixaEletronico */
     private $caixaEletronico;
@@ -41,8 +41,8 @@ class SacarCommand extends Command
             ->argument('valor', 'Valor a ser sacado.')
             ->option("--json", "Formata o retorno para json.", 'boolval', false)
             ->usage(
-                '<bold>php $0</end><comment> 20 </end> <eol/>' .
-                '<bold>php $0</end><comment> --json 20 </end> <eol/>'
+                '<bold>php $0</end><comment> sacar 20 </end> <eol/>' .
+                '<bold>php $0</end><comment> sacar --json 20 </end> <eol/>'
             );
 
         $this->caixaEletronico = $caixaEletronico;
@@ -70,7 +70,7 @@ class SacarCommand extends Command
 
             $notas = $this->caixaEletronico->sacar((float) $valor);
 
-            $io->write($this->formataRetorno($valor, $notas, $json), true);
+            $io->write($this->formataRetornoSucesso($valor, $notas, $json), true);
 
             $this->logger->info("Saque realizado com sucesso.", [
                 "notas" => $notas
@@ -87,6 +87,13 @@ class SacarCommand extends Command
         }
     }
 
+    /**
+     * Formata o retorno de erro
+     *
+     * @param string $message
+     * @param bool $json
+     * @return false|float|int|mixed|\Services_JSON_Error|string
+     */
     private function formataRetornoErro(string $message, $json = false)
     {
         if ($json) {
@@ -100,12 +107,14 @@ class SacarCommand extends Command
     }
 
     /**
+     * Formata o retorno quando sucesso
+     *
      * @param string $valor
      * @param array $notas
      * @param bool $json
      * @return string
      */
-    private function formataRetorno(string $valor, array $notas, $json = false): string
+    private function formataRetornoSucesso(string $valor, array $notas, $json = false): string
     {
         if ($json) {
             return json_encode([
