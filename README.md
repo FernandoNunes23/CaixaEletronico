@@ -48,7 +48,7 @@ momento de escrever o retorno, não consegui resolver o problema de mostrar o re
 Conforme análise realizada notei que dentro do sistema teriam 3 entidades:
 - CaixaEletronico: Responsavel pela execução da regra de negócio especificada.
 - Nota: Responsável por guardar as informações de cada nota.
-- Cliente: Responsável por guardar as informações do cliente.
+- Cliente: Responsável por guardar as informações do cliente.  
 Como uma dos requisitos era resolver da forma mais simples criei somente a Entidade 
 CaixaEletronico pois as outras entidades não possuem propriedades especificas e não iriam
 influenciar no momento na resolução do problema.
@@ -58,6 +58,22 @@ Para o ambiente utilizei Docker e Docker Compose pela facilidade de execução
 em ambientes UNIX.
 
 ### Implementação
+#### Configuração  
+A configuração da aplicação segue o seguinte padrão:  
+ ```php
+    return [
+        "notas_disponiveis" => [
+            100 => ["valor" => 100, "quantidade" => 100 ],
+            50  => ["valor" => 50 , "quantidade" => 100 ],
+            20  => ["valor" => 20 , "quantidade" => 20  ],
+            10  => ["valor" => 10 , "quantidade" => 10  ]
+        ]
+    ];
+```
+- Onde a chave do array deve ser igual a chave 'valor';
+- Caso a quantidade daquela nota seja infinita a chave "quantidade" não deve ser colocada;
+
+#### Lógica de saque
 Foi inserida uma entidade CaixaEletronico que realiza a ação de sacar seguindo a seguinte lógica:
 - Ao montar a entidade é validado o array de notas disponíveis;
 - Após validação o array é ordenado pela chave do maior para o menor;
@@ -78,4 +94,3 @@ então atribui a quantidade total de notas disponíveis daquele valor;
 - Caso não, itera para a próxima nota.
 - Se após toda a iteração, ainda restar valor, significa que as notas disponíveis não cobrem o valor
 solicitado ou não tem como sacar aquele valor com as notas disponíveis.
-
