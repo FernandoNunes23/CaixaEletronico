@@ -7,7 +7,7 @@ namespace Application\Domain\Entity;
 /**
  * Class CaixaEletronico
  */
-final class CaixaEletronico {
+class CaixaEletronico {
 
     /**
      * @var array

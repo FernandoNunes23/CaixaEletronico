@@ -3,7 +3,6 @@
 namespace Application\Console\Command;
 
 use Ahc\Cli\Input\Command;
-use Ahc\Cli\Output\Color;
 use Application\Domain\Entity\CaixaEletronico;
 use Monolog\Logger;
 
@@ -16,9 +15,6 @@ final class SacarCommand extends Command
     /** @var CaixaEletronico */
     private $caixaEletronico;
 
-    /** @var Color */
-    private $colorText;
-
     /** @var Logger */
     private $logger;
 
@@ -26,12 +22,10 @@ final class SacarCommand extends Command
      * SacarCommand constructor.
      *
      * @param CaixaEletronico $caixaEletronico
-     * @param Color $colorText
      * @param Logger $logger
      */
     public function __construct(
         CaixaEletronico $caixaEletronico,
-        Color $colorText,
         Logger $logger
     )
     {
@@ -46,13 +40,16 @@ final class SacarCommand extends Command
             );
 
         $this->caixaEletronico = $caixaEletronico;
-        $this->colorText       = $colorText;
         $this->logger          = $logger;
     }
 
     /**
+     * Executa o comando e retorna zero caso ocorra erro e um caso esteja ok
+     *
+     * @param $json
      * @param $valor
-     * @throws \Exception
+     *
+     * @return int
      */
     public function execute($json, $valor)
     {
@@ -60,7 +57,7 @@ final class SacarCommand extends Command
             "parametros" => $this->app()->argv()
         ]);
 
-        $io = $this->app()->io();
+        $io = $this->app()->io()->writer();
 
         try {
 
@@ -69,7 +66,7 @@ final class SacarCommand extends Command
             }
 
             if (is_null($valor)) {
-                throw new \InvalidArgumentException("O parametro 'valor' deve ser informado.");
+                throw new \InvalidArgumentException("O parametro 'valor' deve ser informado");
             }
 
             $notas = $this->caixaEletronico->sacar((float) $valor);
@@ -80,15 +77,33 @@ final class SacarCommand extends Command
                 "notas" => $notas
             ]);
 
+            return 1;
         } catch (\Exception $e) {
             $this->logger->error("Ocorreu um erro ao retornar as notas para saque.",[
                 "erro" => $e->getMessage()
             ]);
 
-            echo $this->colorText->error($this->formataRetornoErro($e->getMessage(), $json) . "\n");
+           $io->error($this->formataRetornoErro($e->getMessage(), $json), true);
 
-            return;
+            return 0;
         }
+    }
+
+    /**
+     * @return $this|Command
+     */
+    public function defaults(): Command
+    {
+        $this->option('-h, --help', 'Mostra ajuda')->on([$this, 'showHelp']);
+        $this->option('-V, --version', 'Mostra a versão da aplicação')->on([$this, 'showVersion']);
+
+        // @codeCoverageIgnoreStart
+        $this->onExit(function ($exitCode = 0) {
+            exit($exitCode);
+        });
+        // @codeCoverageIgnoreEnd
+
+        return $this;
     }
 
     /**

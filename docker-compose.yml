@@ -7,6 +7,12 @@ services:
     image: caixa-eletronico
     build: ./
 
+  caixa-eletronico-tests:
+    image: php:7.4-alpine3.11
+    volumes:
+      - ./:/app/
+    container_name: caixa-eletronico-tests
+
   composer:
     image: composer
     command: install --ignore-platform-reqs --prefer-dist -o

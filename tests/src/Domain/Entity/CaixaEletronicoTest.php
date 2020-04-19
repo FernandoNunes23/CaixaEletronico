@@ -13,7 +13,7 @@ final class CaixaEletronicoTest extends TestCase
     private $notasDisponiveis;
 
     /**
-     * Gera os valor defaults para realização dos testes
+     * Preparação da classe de testes
      */
     protected function setUp(): void
     {

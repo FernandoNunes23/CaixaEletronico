@@ -28,5 +28,10 @@ Solcita o saque de de R$ 100,00 e retorna json.
 $ docker-compose run --rm caixa-eletronico php /app/application.php sacar --json 100
 ```
 
+## Executando os testes unitários
+```bash
+$ docker-compose run --rm caixa-eletronico-tests /app/vendor/bin/phpunit /app/tests
+```
+
 
 
