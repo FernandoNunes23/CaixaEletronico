@@ -48,8 +48,8 @@ momento de escrever o retorno, não consegui resolver o problema de mostrar o re
 Conforme análise realizada notei que dentro do sistema teriam 3 entidades:
 - CaixaEletronico: Responsavel pela execução da regra de negócio especificada.
 - Nota: Responsável por guardar as informações de cada nota.
-- Cliente: Responsável por guardar as informações do cliente.  
-Como uma dos requisitos era resolver da forma mais simples criei somente a Entidade 
+- Cliente: Responsável por guardar as informações do cliente.     
+Como um dos requisitos era resolver da forma mais simples criei somente a Entidade 
 CaixaEletronico pois as outras entidades não possuem propriedades especificas e não iriam
 influenciar no momento na resolução do problema.
 
